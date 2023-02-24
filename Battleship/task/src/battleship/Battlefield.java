@@ -65,23 +65,55 @@ public class Battlefield {
         return true;
     }
 
-    protected boolean takeShot(int[][] shotCoordinates, Battlefield foggedBattlefield) {
-        if (Validations.validateCoordinates(shotCoordinates)) {
-            return false;
+    protected void takeShot(int[][] shotCoordinates, Battlefield foggedBattlefield, Battlefield battlefieldForChecking) {
+        if (!Validations.validateCoordinates(shotCoordinates)) {
+            if (this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]].equals("O")) {
+                foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
+                battlefieldForChecking.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
+                foggedBattlefield.showBattlefield();
+                if (deathCheck(new int[]{shotCoordinates[0][0], shotCoordinates[0][1]}, battlefieldForChecking)) {
+                    System.out.println("You sank a ship! Specify a new target:");
+                } else {
+                    System.out.println("You hit a ship! Try again:");
+                }
+            } else {
+                foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
+                foggedBattlefield.showBattlefield();
+                System.out.println("You missed. Try again:");
+            }
         }
-        if (this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]].equals("O")) {
-            this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
-            foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
-            foggedBattlefield.showBattlefield();
-            System.out.println("You hit a ship!");
-            this.showBattlefield();
-        } else {
-            this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
-            foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
-            foggedBattlefield.showBattlefield();
-            System.out.println("You missed!");
-            this.showBattlefield();
+    }
+
+    protected boolean checkEndOfGame() {
+        for (String[] strings : this.battlefield) {
+            for (String string : strings) {
+                if (string.equals("O")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean deathCheck(int[] shotCoordinates, Battlefield battlefieldForChecking) {
+        for (int k = 0; k < shotCoordinates.length - 1; k++) {
+            for (int i = shotCoordinates[k] - 1; i <= shotCoordinates[k] + 1; i++) {
+                for (int j = shotCoordinates[k + 1] - 1; j <= shotCoordinates[k + 1] + 1; j++) {
+                    if (j < 1 || i < 1 || i > battlefield.length - 1 || j > battlefield.length - 1) {
+                        continue;
+                    }
+                    if (battlefieldForChecking.battlefield[i][j].equals("O")) {
+                        return false;
+                    }
+                }
+            }
         }
         return true;
+    }
+
+    protected void cloneBattlefield(Battlefield player) {
+        for (int i = 0; i < this.battlefield.length; i++) {
+            System.arraycopy(player.battlefield[i], 0, this.battlefield[i], 0, this.battlefield[i].length);
+        }
     }
 }
