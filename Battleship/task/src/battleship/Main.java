@@ -20,11 +20,11 @@ public class Main {
         ships[4] = new Ship(2,
                 "Destroyer");
 
-        insertCoordinates(scanner, ships, player1);
-
+        arrangeTheShips(scanner, ships, player1);
+        gameStarts(scanner, player1);
     }
 
-    public static void insertCoordinates(Scanner scanner, Ship[] ships, Battlefield player) {
+    private static void arrangeTheShips(Scanner scanner, Ship[] ships, Battlefield player) {
         int i = 0;
         while (!ships[4].status) {
             System.out.printf("Enter the coordinates of the %s (%d cells):", ships[i].name, ships[i].cells);
@@ -36,6 +36,17 @@ public class Main {
             player.showBattlefield();
             ships[i].status = true;
             i++;
+        }
+    }
+
+    private static void gameStarts(Scanner scanner, Battlefield player) {
+        System.out.println("The game starts!");
+        player.showBattlefield();
+        System.out.println("Take a shot!");
+        while (true) {
+            if (player.takeShot(Parsing.parseToCoordinates(scanner.nextLine()))) {
+                break;
+            }
         }
     }
 }

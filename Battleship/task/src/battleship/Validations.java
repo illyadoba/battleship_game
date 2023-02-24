@@ -1,5 +1,7 @@
 package battleship;
 
+import java.util.Arrays;
+
 public class Validations {
     public static boolean validateSizeShip(int[] coordinates, int size) {
         if (coordinates[1] - coordinates[0] + 1 != size) {
@@ -11,14 +13,17 @@ public class Validations {
 
     public static boolean validateCoordinates(int[][] coordinates) {
         for (int[] coordinate : coordinates) {
-            for (int number : coordinate) {
-                if (number < 1 || number > 10) {
-                    System.out.println("Error! Wrong ship location! Try again:");
-                    return false;
+            if (Arrays.equals(coordinate, new int[]{0, 0})) {
+                continue;
+            }
+            for (int i : coordinate) {
+                if (i < 1 || i > 10) {
+                    System.out.println("Error! You entered the wrong coordinates! Try again:");
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     public static boolean validatePositionVertical(String[][] battlefield, int[] coordinates, int size) {

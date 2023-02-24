@@ -30,7 +30,7 @@ public class Battlefield {
     }
 
     protected boolean putShip(int[][] coordinates, int size) {
-        if (!Validations.validateCoordinates(coordinates)) {
+        if (Validations.validateCoordinates(coordinates)) {
             return false;
         }
         if (coordinates[0][0] == coordinates[1][0]) {
@@ -61,6 +61,22 @@ public class Battlefield {
         }
         for (; swap[0] <= swap[1]; swap[0]++) {
             this.battlefield[coordinates[0][0]][swap[0]] = "O";
+        }
+        return true;
+    }
+
+    protected boolean takeShot(int[][] shotCoordinates) {
+        if (Validations.validateCoordinates(shotCoordinates)) {
+            return false;
+        }
+        if (this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]].equals("O")) {
+            this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
+            this.showBattlefield();
+            System.out.println("You hit a ship!");
+        } else {
+            this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
+            this.showBattlefield();
+            System.out.println("You missed!");
         }
         return true;
     }
