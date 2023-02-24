@@ -43,13 +43,11 @@ public class Main {
     }
 
     private static void gameStarts(Scanner scanner, Battlefield player, Battlefield foggedBattlefield) {
-        Battlefield battlefieldForCheck = new Battlefield();
-        battlefieldForCheck.cloneBattlefield(player);
         System.out.println("The game starts!");
         foggedBattlefield.showBattlefield();
         System.out.println("Take a shot!");
-        while (battlefieldForCheck.checkEndOfGame()) {
-            player.takeShot(Parsing.parseToCoordinates(scanner.nextLine()), foggedBattlefield, battlefieldForCheck);
+        while (player.checkEndOfGame()) {
+            player.takeShot(Parsing.parseToCoordinates(scanner.nextLine()), foggedBattlefield);
         }
         System.out.println("You sank the last ship. You won. Congratulations!");
     }

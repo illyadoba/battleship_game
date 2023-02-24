@@ -65,22 +65,27 @@ public class Battlefield {
         return true;
     }
 
-    protected void takeShot(int[][] shotCoordinates, Battlefield foggedBattlefield, Battlefield battlefieldForChecking) {
+    protected void takeShot(int[][] shotCoordinates, Battlefield foggedBattlefield) {
         if (!Validations.validateCoordinates(shotCoordinates)) {
-            if (this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]].equals("O")) {
-                foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
-                battlefieldForChecking.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
-                foggedBattlefield.showBattlefield();
-                if (deathCheck(new int[]{shotCoordinates[0][0], shotCoordinates[0][1]}, battlefieldForChecking)) {
-                    System.out.println("You sank a ship! Specify a new target:");
-                } else {
-                    System.out.println("You hit a ship! Try again:");
+            switch (this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]]) {
+                case "O" -> {
+                    foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
+                    this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
+                    if (deathCheck(new int[]{shotCoordinates[0][0], shotCoordinates[0][1]})) {
+                        System.out.println("You sank a ship! Specify a new target:");
+                    } else {
+                        System.out.println("You hit a ship! Try again:");
+                    }
                 }
-            } else {
-                foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
-                foggedBattlefield.showBattlefield();
-                System.out.println("You missed. Try again:");
+                case "X" -> System.out.println("You hit a ship! Try again:");
+                case "M" -> System.out.println("You missed. Try again:");
+                default -> {
+                    foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
+                    this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
+                    System.out.println("You missed. Try again:");
+                }
             }
+            foggedBattlefield.showBattlefield();
         }
     }
 
@@ -95,25 +100,19 @@ public class Battlefield {
         return false;
     }
 
-    private boolean deathCheck(int[] shotCoordinates, Battlefield battlefieldForChecking) {
+    private boolean deathCheck(int[] shotCoordinates) {
         for (int k = 0; k < shotCoordinates.length - 1; k++) {
             for (int i = shotCoordinates[k] - 1; i <= shotCoordinates[k] + 1; i++) {
                 for (int j = shotCoordinates[k + 1] - 1; j <= shotCoordinates[k + 1] + 1; j++) {
                     if (j < 1 || i < 1 || i > battlefield.length - 1 || j > battlefield.length - 1) {
                         continue;
                     }
-                    if (battlefieldForChecking.battlefield[i][j].equals("O")) {
+                    if (this.battlefield[i][j].equals("O")) {
                         return false;
                     }
                 }
             }
         }
         return true;
-    }
-
-    protected void cloneBattlefield(Battlefield player) {
-        for (int i = 0; i < this.battlefield.length; i++) {
-            System.arraycopy(player.battlefield[i], 0, this.battlefield[i], 0, this.battlefield[i].length);
-        }
     }
 }
