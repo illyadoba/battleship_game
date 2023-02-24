@@ -65,18 +65,22 @@ public class Battlefield {
         return true;
     }
 
-    protected boolean takeShot(int[][] shotCoordinates) {
+    protected boolean takeShot(int[][] shotCoordinates, Battlefield foggedBattlefield) {
         if (Validations.validateCoordinates(shotCoordinates)) {
             return false;
         }
         if (this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]].equals("O")) {
             this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
-            this.showBattlefield();
+            foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
+            foggedBattlefield.showBattlefield();
             System.out.println("You hit a ship!");
+            this.showBattlefield();
         } else {
             this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
-            this.showBattlefield();
+            foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
+            foggedBattlefield.showBattlefield();
             System.out.println("You missed!");
+            this.showBattlefield();
         }
         return true;
     }

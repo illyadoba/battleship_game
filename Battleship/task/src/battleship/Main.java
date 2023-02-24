@@ -12,6 +12,9 @@ public class Main {
         player1.createBattlefield();
         player1.showBattlefield();
 
+        Battlefield fogPlayer1 = new Battlefield();
+        fogPlayer1.createBattlefield();
+
         Ship[] ships = new Ship[5];
         ships[0] = new Ship(5, "Aircraft Carrier");
         ships[1] = new Ship(4, "Battleship");
@@ -21,7 +24,7 @@ public class Main {
                 "Destroyer");
 
         arrangeTheShips(scanner, ships, player1);
-        gameStarts(scanner, player1);
+        gameStarts(scanner, player1, fogPlayer1);
     }
 
     private static void arrangeTheShips(Scanner scanner, Ship[] ships, Battlefield player) {
@@ -39,12 +42,12 @@ public class Main {
         }
     }
 
-    private static void gameStarts(Scanner scanner, Battlefield player) {
+    private static void gameStarts(Scanner scanner, Battlefield player, Battlefield foggedBattlefield) {
         System.out.println("The game starts!");
-        player.showBattlefield();
+        foggedBattlefield.showBattlefield();
         System.out.println("Take a shot!");
         while (true) {
-            if (player.takeShot(Parsing.parseToCoordinates(scanner.nextLine()))) {
+            if (player.takeShot(Parsing.parseToCoordinates(scanner.nextLine()), foggedBattlefield)) {
                 break;
             }
         }
