@@ -80,20 +80,19 @@ public class Battlefield {
                     foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
                     this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "X";
                     if (deathCheck(new int[]{shotCoordinates[0][0], shotCoordinates[0][1]})) {
-                        System.out.println("You sank a ship! Specify a new target:");
+                        System.out.println("You sank a ship!");
                     } else {
-                        System.out.println("You hit a ship! Try again:");
+                        System.out.println("You hit a ship!");
                     }
                 }
-                case "X" -> System.out.println("You hit a ship! Try again:");
-                case "M" -> System.out.println("You missed. Try again:");
+                case "X" -> System.out.println("You hit a ship!");
+                case "M" -> System.out.println("You missed.");
                 default -> {
                     foggedBattlefield.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
                     this.battlefield[shotCoordinates[0][0]][shotCoordinates[0][1]] = "M";
-                    System.out.println("You missed. Try again:");
+                    System.out.println("You missed.");
                 }
             }
-            foggedBattlefield.showBattlefield();
         }
     }
 
@@ -101,11 +100,11 @@ public class Battlefield {
         for (String[] strings : this.battlefield) {
             for (String string : strings) {
                 if (string.equals("O")) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     private boolean deathCheck(int[] shotCoordinates) {

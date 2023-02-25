@@ -31,7 +31,19 @@ public class Main {
         arrangeTheShips(scanner, ships, player1);
         arrangeTheShips(scanner, ships, player2);
 
-        gameStarts(scanner, player1, fogPlayer1);
+        while (true) {
+            takeMove(fogPlayer2, player1, player2, scanner);
+            if (player2.checkEndOfGame()) {
+                break;
+            }
+            Battlefield.clearConsole(scanner);
+            takeMove(fogPlayer1, player2, player1, scanner);
+            if (player1.checkEndOfGame()) {
+                break;
+            }
+            Battlefield.clearConsole(scanner);
+        }
+        System.out.println("You sank the last ship. You won. Congratulations!");
     }
 
     private static void arrangeTheShips(Scanner scanner, Ship[] ships, Battlefield player) {
@@ -51,10 +63,11 @@ public class Main {
         Battlefield.clearConsole(scanner);
     }
 
-    private static void gameStarts(Scanner scanner, Battlefield player, Battlefield foggedBattlefield) {
-        while (player.checkEndOfGame()) {
-            player.takeShot(Parsing.parseToCoordinates(scanner.nextLine()), foggedBattlefield);
-        }
-        System.out.println("You sank the last ship. You won. Congratulations!");
+    private static void takeMove(Battlefield enemyFogBattlefield, Battlefield player, Battlefield enemy, Scanner scanner) {
+        enemyFogBattlefield.showBattlefield();
+        System.out.println("---------------------");
+        player.showBattlefield();
+        System.out.printf("%s,it's your turn:\n", player.playerName);
+        enemy.takeShot(Parsing.parseToCoordinates(scanner.nextLine()), enemyFogBattlefield);
     }
 }
