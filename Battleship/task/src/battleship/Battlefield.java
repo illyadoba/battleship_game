@@ -1,9 +1,17 @@
 package battleship;
 
+import java.util.Scanner;
+
 public class Battlefield {
 
     String[][] battlefield = new String[11][11];
     char column = 'A';
+
+    String playerName;
+
+    public Battlefield(String playerName) {
+        this.playerName = playerName;
+    }
 
     protected void createBattlefield() {
         for (int i = 0; i < this.battlefield.length; i++) {
@@ -114,5 +122,13 @@ public class Battlefield {
             }
         }
         return true;
+    }
+
+    protected static void clearConsole(Scanner scanner) {
+        do {
+            System.out.println("Press Enter and pass the move to another player");
+        } while (scanner.nextLine() == null);
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }
